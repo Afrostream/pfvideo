@@ -1,5 +1,6 @@
 # pfvideo
-afrostream-pfvideo
+Ce projet necessite l'installation de docker sur votre machine afin de proceder aux etapes d'installation
+Pour les utilisateurs de MacOSX: https://docs.docker.com/engine/installation/mac/
 
 Docker-compose project to spawn a complete video platform up and ready.
 This compose include:
