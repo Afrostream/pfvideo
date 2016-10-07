@@ -12,7 +12,9 @@ services:
     environment:
      - RABBITMQ_DEFAULT_USER=rabbitmq
      - RABBITMQ_DEFAULT_PASS=rabbitmq
-    image: rabbitmq:3
+    ports:
+     - "15673:15672"
+    image: rabbitmq:3-management
   pfscheduler:
     environment:
      - FFMPEG_PATH=/usr/bin/ffmpeg
