@@ -1,0 +1,61 @@
+version: '2'
+services:
+  mysqlvideoencoding:
+    environment:
+     - MYSQL_ROOT_PASSWORD=mysql
+    build: ./mysqlvideoencoding
+    ports:
+     - "3307:3306"
+    volumes:
+     - /Users/admin/Docker/Afrostream/PFVideo/data/mysql:/var/lib/mysql
+  rabbitmq:
+    environment:
+     - RABBITMQ_DEFAULT_USER=rabbitmq
+     - RABBITMQ_DEFAULT_PASS=rabbitmq
+    image: rabbitmq:3
+  pfscheduler:
+    environment:
+     - FFMPEG_PATH=/usr/bin/ffmpeg
+     - USP_PACKAGE_PATH=/usr/local/bin/usp_package.sh
+     - VIDEOS_ENCODED_BASE_PATH=/space/videos/encoded
+     - MYSQL_HOST=mysqlvideoencoding
+     - MYSQL_USER=root
+     - MYSQL_PASSWORD=mysql
+     - RABBITMQ_HOST=rabbitmq
+     - RABBITMQ_USER=rabbitmq
+     - RABBITMQ_PASSWORD=rabbitmq
+    build: ./pfscheduler
+    ports:
+     - "4000:4000"
+    volumes:
+     - ./data/videos_encoded:/space/videos/encoded
+     - ./data/videos_sources:/space/videos/sources
+    depends_on:
+     - mysqlvideoencoding
+     - rabbitmq
+    links:
+     - mysqlvideoencoding
+     - rabbitmq
+  pfencoder:
+    environment:
+     - UPTIME_PATH=/usr/bin/uptime
+     - SPUMUX_PATH=/usr/bin/spumux
+     - FFMPEG_PATH=/usr/bin/ffmpeg
+     - USP_PACKAGE_PATH=/usr/local/bin/usp_package.sh
+     - VIDEOS_ENCODED_BASE_PATH=/space/videos/encoded
+     - MYSQL_HOST=mysqlvideoencoding
+     - MYSQL_USER=root
+     - MYSQL_PASSWORD=mysql
+     - RABBITMQ_HOST=rabbitmq
+     - RABBITMQ_USER=rabbitmq
+     - RABBITMQ_PASSWORD=rabbitmq
+    build: ./pfencoder
+    volumes:
+     - ./data/videos_encoded:/space/videos/encoded
+     - ./data/videos_sources:/space/videos/sources
+    depends_on:
+     - mysqlvideoencoding
+     - rabbitmq
+    links:
+     - mysqlvideoencoding
+     - rabbitmq
