@@ -7,7 +7,7 @@ services:
     ports:
      - "3307:3306"
     volumes:
-     - /Users/admin/Docker/Afrostream/PFVideo/data/mysql:/var/lib/mysql
+     - ./data/mysql:/var/lib/mysql
   rabbitmq:
     environment:
      - RABBITMQ_DEFAULT_USER=rabbitmq
