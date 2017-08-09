@@ -13,6 +13,7 @@ services:
      - RABBITMQ_DEFAULT_USER=rabbitmq
      - RABBITMQ_DEFAULT_PASS=rabbitmq
     ports:
+     - "5673:5672"
      - "15673:15672"
     image: rabbitmq:3-management
   pfscheduler:
@@ -51,7 +52,9 @@ services:
      - RABBITMQ_HOST=rabbitmq
      - RABBITMQ_USER=rabbitmq
      - RABBITMQ_PASSWORD=rabbitmq
-    build: ./pfencoder
+    build: 
+     context: pfencoder
+     dockerfile: Dockerfile
     volumes:
      - ./data/videos_encoded:/space/videos/encoded
      - ./data/videos_sources:/space/videos/sources
