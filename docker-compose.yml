@@ -27,7 +27,9 @@ services:
      - RABBITMQ_HOST=rabbitmq
      - RABBITMQ_USER=rabbitmq
      - RABBITMQ_PASSWORD=rabbitmq
-    build: ./pfscheduler
+    build:
+     context: pfscheduler
+     dockerfile: Dockerfile
     ports:
      - "4000:4000"
     volumes:
